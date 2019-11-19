@@ -10,7 +10,7 @@ you can use it transfer files in the same network without removable disk.
 * connection speed limit
 * shell-like cli command
 * checksum of downloaded file and block
-* directory download (in progress)
+* recursive directory download
 
 ## Requirement
 
@@ -75,7 +75,7 @@ show file/dir information
 ##### download remote file
 
 ```
-Usage:  download [-fh] [-bs=<blockSize>] [-l=<limit>] <remotePath> <localPath>
+Usage:  download [-frh] [-bs=<blockSize>] [-l=<limit>] <remotePath> <localPath>
 download special file from remote server
       <remotePath>      remote file path
       <localPath>       local file path
@@ -84,4 +84,5 @@ download special file from remote server
   -f, --force           overwrite if local file exists.
   -h, --help            display this message
   -l, --limit=<limit>   download/up speed limit, e.g. 2M, 512K, 0 unlimited.
+  -r, --recursive       recursive download directory.
 ```

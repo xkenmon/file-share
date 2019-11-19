@@ -56,12 +56,12 @@ public class CmdResponseDecoder extends ReplayingDecoder {
 
     if (hasDirSize(options)) {
       long size = in.readLong();
-      response.setSize(size);
+      response.setTotalSize(size);
     }
     int listSize = in.readInt();
     List<ItemInfo> infoList = new ArrayList<>(listSize);
     for (int i = 0; i < listSize; i++) {
-      ItemInfo info = decodeItemInfo(in);
+      ItemInfo info = decodeItemInfo(in, options);
       if (info == null) {
         return;
       }
@@ -71,7 +71,7 @@ public class CmdResponseDecoder extends ReplayingDecoder {
     out.add(response);
   }
 
-  private ItemInfo decodeItemInfo(ByteBuf in) {
+  private ItemInfo decodeItemInfo(ByteBuf in, byte options) {
     ItemInfo itemInfo = new ItemInfo();
     String path = CodecUtil.decodeShortString(in);
     if (path == null) {
@@ -83,6 +83,11 @@ public class CmdResponseDecoder extends ReplayingDecoder {
     if (type == FileType.FILE) {
       long size = in.readLong();
       itemInfo.setSize(size);
+      if (hasFileMd5(options)) {
+        byte[] md5 = new byte[16];
+        in.readBytes(md5);
+        itemInfo.setMd5(md5);
+      }
     }
     return itemInfo;
   }

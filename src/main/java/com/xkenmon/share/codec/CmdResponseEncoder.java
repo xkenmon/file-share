@@ -16,6 +16,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.EncoderException;
 import io.netty.handler.codec.MessageToByteEncoder;
+import java.util.Objects;
 import lombok.extern.java.Log;
 
 @Log
@@ -73,10 +74,10 @@ public class CmdResponseEncoder extends MessageToByteEncoder<CmdResponse> {
     out.writeByte(msg.getOptions());
     CodecUtil.encodeShortString(msg.getPath(), out);
     if (hasDirSize(msg.getOptions())) {
-      out.writeLong(msg.getSize());
+      out.writeLong(msg.getTotalSize());
     }
     out.writeInt(msg.getItemInfoList().size());
-    msg.getItemInfoList().forEach(info -> this.encodeItemInfo(info, out));
+    msg.getItemInfoList().forEach(info -> this.encodeItemInfo(info, out, msg.getOptions()));
   }
 
   private void encodeErrorResponse(ErrorResponse msg, ByteBuf out) {
@@ -84,11 +85,15 @@ public class CmdResponseEncoder extends MessageToByteEncoder<CmdResponse> {
     CodecUtil.encodeShortString(msg.getMessage(), out);
   }
 
-  private void encodeItemInfo(ItemInfo info, ByteBuf out) {
+  private void encodeItemInfo(ItemInfo info, ByteBuf out, byte options) {
     CodecUtil.encodeShortString(info.getPath(), out);
     out.writeByte(info.getType());
     if (FileType.FILE == info.getType()) {
       out.writeLong(info.getSize());
+      if (hasFileMd5(options)) {
+        Objects.requireNonNull(info.getMd5(), "FileMd5 option set but itemInfo.md5 is null");
+        out.writeBytes(info.getMd5());
+      }
     }
   }
 }

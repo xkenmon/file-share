@@ -24,11 +24,11 @@ public class Server implements Runnable {
 
   @Option(names = {"--channel-limit"}, defaultValue = "0",
       description = "r/w speed limit per connection. e.g. 1M", converter = ByteSizeConverter.class)
-  private Integer channelLimit;
+  private Integer channelLimit = 0;
 
   @Option(names = {"--global-limit"}, defaultValue = "0",
       description = "global r/w speed limit. e.g. 1G", converter = ByteSizeConverter.class)
-  private Integer globalLimit;
+  private Integer globalLimit = 0;
 
   @Option(names = {"--help", "-h"}, usageHelp = true, description = "display this message")
   private boolean help;

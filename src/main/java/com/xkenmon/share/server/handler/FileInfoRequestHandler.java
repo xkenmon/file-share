@@ -48,10 +48,13 @@ class FileInfoRequestHandler extends SimpleChannelInboundHandler<InfoRequest> {
       DirectoryInfoResponse info = new DirectoryInfoResponse();
       info.setPath(file.toString());
       if (hasDirSize(options)) {
-        info.setSize(FileUtil.getSize(file.toString()));
+        info.setTotalSize(FileUtil.getSize(file.toString()));
         respOpt |= DIR_SIZE;
       }
-      info.setItemInfoList(listDir(msg.getPath()));
+      if (hasFileMd5(options)) {
+        respOpt |= FILE_MD5;
+      }
+      info.setItemInfoList(listDir(msg.getPath(), options));
       info.setOptions(respOpt);
       log.info("write DirInfo: " + info.getPath());
       ctx.pipeline().writeAndFlush(info);
@@ -72,12 +75,12 @@ class FileInfoRequestHandler extends SimpleChannelInboundHandler<InfoRequest> {
     }
   }
 
-  private List<ItemInfo> listDir(String pathStr) throws IOException {
+  private List<ItemInfo> listDir(String pathStr, byte options) throws IOException {
     Path path = Paths.get(pathStr);
-    return Files.list(path).map(this::toItemInfo).collect(Collectors.toList());
+    return Files.list(path).map(p -> toItemInfo(p, options)).collect(Collectors.toList());
   }
 
-  private ItemInfo toItemInfo(Path path) {
+  private ItemInfo toItemInfo(Path path, byte options) {
     ItemInfo info = new ItemInfo();
     info.setPath(path.toAbsolutePath().normalize().toString());
     if (Files.isDirectory(path)) {
@@ -86,8 +89,11 @@ class FileInfoRequestHandler extends SimpleChannelInboundHandler<InfoRequest> {
       info.setType(FileType.FILE);
       try {
         info.setSize(Files.size(path));
+        if (hasFileMd5(options)) {
+          info.setMd5(DigestUtil.md5(path));
+        }
       } catch (IOException e) {
-        log.warning("unable to get file size: " + e.getMessage());
+        log.warning(e.getMessage());
         e.printStackTrace();
       }
     }

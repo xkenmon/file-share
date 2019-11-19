@@ -12,7 +12,7 @@ public class DirectoryInfoResponse extends CmdResponse {
   private byte options;
   private String path;
   // optional
-  private long size;
+  private long totalSize;
   private List<ItemInfo> itemInfoList;
 
   @Override
@@ -25,6 +25,9 @@ public class DirectoryInfoResponse extends CmdResponse {
 
     private String path;
     private byte type;
+    // for file
     private long size;
+    // for file (optional)
+    private byte[] md5;
   }
 }

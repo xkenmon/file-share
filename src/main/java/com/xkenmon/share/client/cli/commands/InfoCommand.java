@@ -115,7 +115,7 @@ public class InfoCommand implements Runnable {
     builder.append("Path: ").append(response.getPath()).append('\n');
     builder.append("-------------------------\n");
     if (InfoOptions.hasDirSize(response.getOptions())) {
-      builder.append("Total Size: ").append(FileUtil.formatSize(response.getSize())).append('\n');
+      builder.append("Total Size: ").append(FileUtil.formatSize(response.getTotalSize())).append('\n');
     }
     builder.append(String.format("%-10s%-10s%s\n", "Type", "Size", "Path"));
     builder.append(String.format("%-10s%-10s%s\n", "----", "----", "----"));
