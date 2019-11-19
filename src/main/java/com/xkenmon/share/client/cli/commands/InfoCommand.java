@@ -41,13 +41,16 @@ public class InfoCommand implements Runnable {
   private final BlockingQueue<CmdResponse> responseQueue;
   private final CliContext cliContext;
 
-  @Option(names = "size")
+  @Option(names = {"-s", "-size"}, description = "count directory total size (only for directory)")
   private boolean dirSize;
 
-  @Option(names = "md5")
+  @Option(names = {"-c", "-md5"}, description = "calculate file checksum (only for file)")
   private boolean md5;
 
-  @Parameters(defaultValue = ".")
+  @Option(names = {"-h", "--help"}, usageHelp = true, description = "display this message")
+  private boolean help;
+
+  @Parameters(defaultValue = ".", description = "remote file path")
   private String path;
 
   public InfoCommand(PrintWriter out, ChannelHandlerContext context,

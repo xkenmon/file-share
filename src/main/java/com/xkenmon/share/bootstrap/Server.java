@@ -30,6 +30,8 @@ public class Server implements Runnable {
       description = "global r/w speed limit. e.g. 1G", converter = ByteSizeConverter.class)
   private Integer globalLimit;
 
+  @Option(names = {"--help", "-h"}, usageHelp = true, description = "display this message")
+  private boolean help;
 
   public static void main(String[] args) {
     new Server().start("0.0.0.0", 9999);

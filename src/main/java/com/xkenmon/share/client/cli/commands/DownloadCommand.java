@@ -51,12 +51,15 @@ public class DownloadCommand implements Runnable {
   private int limit;
 
   @Option(names = {"--force", "-f"}, defaultValue = "false",
-      description = "overwrite exists file.")
+      description = "overwrite if local file exists.")
   private boolean force;
 
-  @Parameters(index = "0")
+  @Option(names = {"--help", "-h"}, usageHelp = true, description = "display this message")
+  private boolean help;
+
+  @Parameters(index = "0", description = "remote file path")
   private String remotePath;
-  @Parameters(index = "1")
+  @Parameters(index = "1", description = "local file path")
   private Path localPath;
 
   private TrafficCounter counter;

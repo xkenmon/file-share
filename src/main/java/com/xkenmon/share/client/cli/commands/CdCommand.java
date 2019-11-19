@@ -23,7 +23,7 @@ public class CdCommand implements Runnable {
   private final PrintWriter out;
   private final BlockingQueue<CmdResponse> responseQueue;
 
-  @Parameters(index = "0")
+  @Parameters(index = "0", description = "remote directory path")
   private String path;
 
   private final CliContext cliContext;

@@ -15,6 +15,6 @@ public class CliCommands implements Runnable {
 
   @Override
   public void run() {
-    out.println(new CommandLine(this).getUsageMessage());
+    new CommandLine(this).usage(out);
   }
 }

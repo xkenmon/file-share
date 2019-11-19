@@ -27,6 +27,9 @@ public class Client implements Runnable {
       converter = ByteSizeConverter.class)
   private Integer limit = 0;
 
+  @Option(names = {"--help", "-h"}, usageHelp = true, description = "display this message")
+  private boolean help;
+
   public static void main(String[] args) {
     new Client().start("localhost", 9999);
   }
