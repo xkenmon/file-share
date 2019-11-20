@@ -3,6 +3,8 @@
 File-share is a easy to use tcp based file transfer tool.
 you can use it transfer files in the same network without removable disk.
 
+[![asciicast](https://asciinema.org/a/282464.svg)](https://asciinema.org/a/282464)
+
 ## Features
 
 * download resuming
