@@ -85,7 +85,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <guava.version>28.1-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <jline.version>3.13.1</jline.version>
     <lombok.version>1.18.0</lombok.version>
 
